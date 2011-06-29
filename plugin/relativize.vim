@@ -74,23 +74,23 @@ com! -nargs=1 Relativize call MakeRelativeTo (<f-args>)
 fun! MakeRelativeTo (relfilename )
 
     if match (a:relfilename, '[^0-9A-Za-z_\.]') != -1
-        echo "Argument contains invalid characters"
+        "echo "Argument contains invalid characters"
         return 0
     endif
 
-    let myfile = expand('%')
+    let myfile = expand('%:p')
 
-    echo match (myfile,'/')
-    echo myfile
+    "echo match (myfile,'/')
+    "echo myfile
 
     if match (myfile,'/') != 0
-        echo ("File is Already Relative")
+        "echo ("File is Already Relative")
         return 0
     endif
 
     let tagfile = substitute(myfile,'\/[^\/]*$','/' . a:relfilename , '')
     if (filereadable (tagfile))
-        echo 'Working Directory set to: ' . tagfile
+        "echo 'Working Directory set to: ' . tagfile
         execute 'lcd '  . substitute(tagfile,a:relfilename . '$','', '')
         return 1
     else
@@ -101,13 +101,13 @@ fun! MakeRelativeTo (relfilename )
         let tagfile = substitute(tagfile,'\/[^\/]*\/'.a:relfilename.'$','/'. a:relfilename , '')
 
         if (filereadable (tagfile))
-            echo 'Working Directory set to: ' . tagfile
+            "echo 'Working Directory set to: ' . tagfile
             execute 'lcd '  . substitute(tagfile,a:relfilename . '$','', '')
             return 1
         else
         endif
     endwhile
 
-    echo 'Could not find a tags file in parent directories'
+    "echo 'Could not find a tags file in parent directories'
     return 0
 endfun
